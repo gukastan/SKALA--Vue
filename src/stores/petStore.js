@@ -21,9 +21,9 @@ export const usePetStore = defineStore('pet', () => {
   }
 
   function decayByTime() {
-    energy.value = Math.max(0, energy.value - 1)
-    comfort.value = Math.max(0, comfort.value - 1)
-    hunger.value = Math.min(100, hunger.value + 1)
+    energy.value = Math.max(0, energy.value - 5)
+    comfort.value = Math.max(0, comfort.value - 5)
+    hunger.value = Math.min(100, hunger.value + 5)
 
     if (energy.value <= 20) mood.value = '졸림'
     else if (comfort.value <= 20) mood.value = '불편'
@@ -32,7 +32,7 @@ export const usePetStore = defineStore('pet', () => {
 
   function startTimeDecay() {
     if (decayTimer) return
-    decayTimer = window.setInterval(decayByTime, 30000)
+    decayTimer = window.setInterval(decayByTime, 10000)
   }
 
   function stopTimeDecay() {
