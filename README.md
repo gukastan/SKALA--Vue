@@ -42,3 +42,17 @@ npm run build
 ```sh
 npm run lint
 ```
+
+## Weather API
+
+The app uses Mock Data by default. To enable live weather data, create a `.env` file from `.env.example` and add an OpenWeatherMap API key:
+
+```sh
+cp .env.example .env
+```
+
+Set `VITE_OPENWEATHER_API_KEY` in `.env`. The key is read only from an environment variable and must not be committed to Git.
+
+## External UI Library
+
+This project uses [Element Plus](https://element-plus.org/) for menus, cards, tags, inputs, alerts, progress bars, and layout components.

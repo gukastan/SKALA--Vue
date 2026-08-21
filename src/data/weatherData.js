@@ -2,6 +2,7 @@ export const weatherCities = [
   {
     id: 'city_jeonju',
     name: '전주',
+    apiQuery: 'Jeonju,KR',
     temp: 27,
     status: '맑음',
     humidity: 58,
@@ -17,6 +18,7 @@ export const weatherCities = [
   {
     id: 'city_busan',
     name: '부산',
+    apiQuery: 'Busan,KR',
     temp: 24,
     status: '구름',
     humidity: 68,
@@ -32,6 +34,7 @@ export const weatherCities = [
   {
     id: 'city_gwangju',
     name: '광주',
+    apiQuery: 'Gwangju,KR',
     temp: 22,
     status: '비',
     humidity: 85,
@@ -47,6 +50,7 @@ export const weatherCities = [
   {
     id: 'city_cheonan',
     name: '천안',
+    apiQuery: 'Cheonan,KR',
     temp: 25,
     status: '맑음',
     humidity: 55,

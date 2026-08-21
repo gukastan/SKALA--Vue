@@ -8,6 +8,7 @@ const concepts = [
   { name: 'props / emits', description: '펫 스테이지와 돌봄 버튼이 부모 상태와 통신합니다.', code: 'defineProps() · defineEmits()' },
   { name: 'Pinia', description: '구름이의 기분·체력·쾌적도·배고픔을 공유합니다.', code: 'usePetStore() · petStore.care()' },
   { name: 'setInterval', description: '시간이 흐르면 펫 상태가 자동으로 조금씩 변합니다.', code: 'setInterval(decayByTime, 30000)' },
+  { name: 'Axios', description: '환경변수 API 키가 있으면 네 도시의 실시간 날씨를 가져옵니다.', code: 'axios.get(OPENWEATHER_URL, { params })' },
   { name: 'Vue Router', description: '도시 상세·학습·실습 화면을 페이지로 연결합니다.', code: 'router.push(`/weather/${id}`)' },
 ]
 </script>
