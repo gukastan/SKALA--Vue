@@ -1,13 +1,15 @@
 <script setup>
-import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
 import BaseDashboardCard from '../components/exercise/BaseDashboardCard.vue'
 import SearchBar from '../components/exercise/SearchBar.vue'
 import WeatherCard from '../components/exercise/WeatherCard.vue'
 import CareActions from '../components/pet/CareActions.vue'
 import PetStage from '../components/pet/PetStage.vue'
 import PetStatusCard from '../components/pet/PetStatusCard.vue'
-import { createPet, weatherCities } from '../data/weatherData'
+import { weatherCities } from '../data/weatherData'
+import { usePetStore } from '../stores/petStore'
 
 const router = useRouter()
 const route = useRoute()
@@ -15,8 +17,8 @@ const weatherList = ref(weatherCities)
 const searchQuery = ref('')
 const selectedCity = ref(weatherList.value[0])
 const selectedCityInfo = ref('도시를 선택하면 구름이가 여행을 시작해요.')
-const pet = reactive(createPet())
-const actionMessage = ref('오늘은 어디로 여행을 떠나볼까요?')
+const petStore = usePetStore()
+const { name: petName, mood, energy, comfort, hunger, statusText: actionMessage } = storeToRefs(petStore)
 
 onMounted(() => {
   if (route.query.search) searchQuery.value = route.query.search
@@ -44,32 +46,11 @@ const recommendation = computed(() => {
 const selectCity = (city) => {
   selectedCity.value = city
   selectedCityInfo.value = `${city.name}이 선택되었습니다. 구름이가 ${city.landmark}(으)로 이동했어요.`
+  petStore.resetStatus()
   actionMessage.value = city.petMessage
 }
 
-const handleCare = (action) => {
-  if (action === 'water') {
-    pet.comfort = Math.min(100, pet.comfort + (selectedCity.value.temp >= 27 ? 15 : 5))
-    actionMessage.value = '💧 시원한 물을 마신 구름이의 쾌적도가 올라갔어요.'
-  } else if (action === 'snack') {
-    pet.hunger = Math.max(0, pet.hunger - 20)
-    pet.mood = '행복'
-    actionMessage.value = '🍪 맛있는 간식을 먹고 구름이가 행복해졌어요.'
-  } else if (action === 'walk') {
-    if (selectedCity.value.rainProbability >= 60 || selectedCity.value.airQuality === '나쁨') {
-      pet.energy = Math.max(0, pet.energy - 10)
-      actionMessage.value = '🌧️ 날씨가 좋지 않아 산책이 조금 힘들었어요.'
-    } else {
-      pet.mood = '행복'
-      pet.energy = Math.max(0, pet.energy - 5)
-      actionMessage.value = '🌳 즐겁게 산책하고 구름이의 기분이 좋아졌어요.'
-    }
-  } else {
-    pet.energy = Math.min(100, pet.energy + 15)
-    pet.comfort = Math.min(100, pet.comfort + 5)
-    actionMessage.value = '🛋️ 포근하게 쉬고 구름이의 체력이 회복됐어요.'
-  }
-}
+const handleCare = (action) => petStore.care(action, selectedCity.value)
 
 const handleDetailJump = (id) => router.push(`/weather/${id}`)
 </script>
@@ -77,7 +58,7 @@ const handleDetailJump = (id) => router.push(`/weather/${id}`)
 <template>
   <div class="dashboard-wrapper pixel-weather-app">
     <section class="dashboard-hero pixel-hero">
-      <div><span class="eyebrow">PIXEL WEATHER PET</span><h1>날씨를 따라 여행하는<br /><span>구름이의 하루</span></h1><p>도시를 선택하면 구름이가 그곳의 날씨와 랜드마크를 만나러 떠나요.</p></div><div class="hero-pet">☁️</div>
+      <div><span class="eyebrow">PIXEL WEATHER PET</span><h1>날씨를 따라 여행하는<br /><span>{{ petName }}의 하루</span></h1><p>도시를 선택하면 {{ petName }}가 그곳의 날씨와 랜드마크를 만나러 떠나요.</p></div><div class="hero-pet">☁️</div>
     </section>
 
     <BaseDashboardCard><SearchBar :current-query="searchQuery" @update-query="(val) => (searchQuery = val)" /></BaseDashboardCard>
@@ -93,8 +74,8 @@ const handleDetailJump = (id) => router.push(`/weather/${id}`)
       </div>
 
       <div class="pet-column">
-        <PetStage :city="selectedCity" :pet="pet" />
-        <div class="pet-grid"><PetStatusCard :pet="pet" /><CareActions @care="handleCare" /></div>
+        <PetStage :city="selectedCity" :pet="{ name: petName, mood, energy, comfort, hunger }" />
+        <div class="pet-grid"><PetStatusCard :pet="{ name: petName, mood, energy, comfort, hunger }" /><CareActions @care="handleCare" /></div>
         <el-alert class="recommendation-alert" :title="recommendation" type="warning" :closable="false" show-icon />
         <el-alert class="action-alert" :title="actionMessage" type="info" :closable="false" show-icon />
       </div>

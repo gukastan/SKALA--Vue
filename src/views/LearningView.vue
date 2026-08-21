@@ -1,13 +1,13 @@
 <script setup>
 const concepts = [
-  { name: 'ref', description: '날씨 목록과 선택 상태를 반응형 데이터로 관리합니다.', code: 'const weatherList = ref([...])' },
-  { name: 'v-for', description: '날씨 데이터 배열을 카드 목록으로 반복 렌더링합니다.', code: '<WeatherCard v-for="item in list" />' },
-  { name: 'v-if', description: '기온에 따라 더움·선선함 라벨을 결정합니다.', code: 'v-if="cityItem.temp >= 25"' },
-  { name: 'computed', description: '검색어에 맞는 도시만 계산해 표시합니다.', code: 'computed(() => filteredList)' },
-  { name: '@click', description: '카드 선택과 상세 페이지 이동을 연결합니다.', code: '@click.stop="handleDetail"' },
-  { name: 'props / emits', description: '부모와 자식 컴포넌트가 데이터를 주고받습니다.', code: 'defineProps() · defineEmits()' },
-  { name: 'Pinia', description: '메인과 상세 화면이 단위 상태를 공유합니다.', code: 'useConfigStore()' },
-  { name: 'Vue Router', description: '대시보드·상세·소개 화면을 연결합니다.', code: 'router.push(`/weather/${id}`)' },
+  { name: 'ref', description: '전주·부산·광주·천안 날씨 목록을 반응형으로 관리합니다.', code: 'const weatherList = ref(weatherCities)' },
+  { name: 'v-for', description: '도시 배열을 여행 카드 목록으로 반복 렌더링합니다.', code: '<WeatherCard v-for="item in filteredList" />' },
+  { name: 'v-if', description: '비·자외선·기온 조건에 따라 추천 태그를 표시합니다.', code: 'v-if="city.rainProbability >= 60"' },
+  { name: 'computed', description: '검색 결과와 구름이의 날씨 추천을 계산합니다.', code: 'const recommendation = computed(...)' },
+  { name: ':class', description: '선택한 도시의 랜드마크 배경 클래스를 바인딩합니다.', code: ':class="city.backgroundClass"' },
+  { name: 'props / emits', description: '펫 스테이지와 돌봄 버튼이 부모 상태와 통신합니다.', code: 'defineProps() · defineEmits()' },
+  { name: 'Pinia', description: '구름이의 기분·체력·쾌적도·배고픔을 공유합니다.', code: 'usePetStore() · petStore.care()' },
+  { name: 'Vue Router', description: '도시 상세·학습·실습 화면을 페이지로 연결합니다.', code: 'router.push(`/weather/${id}`)' },
 ]
 </script>
 
@@ -15,14 +15,14 @@ const concepts = [
   <section class="learning-page">
     <div class="page-heading">
       <p class="eyebrow">LEARN HOW VUE WORKS</p>
-      <h1>완성된 날씨 앱에서<br /><span>Vue의 동작을 읽어보세요.</span></h1>
-      <p class="page-lead">사용자 모드의 화면이 어떤 Vue 문법으로 만들어졌는지 한눈에 확인하는 학습 공간입니다.</p>
+      <h1>구름이의 여행에서<br /><span>Vue의 동작을 읽어보세요.</span></h1>
+      <p class="page-lead">도시 선택부터 날씨 반응, 펫 돌봄까지 Pixel Weather Pet의 데이터 흐름을 따라가며 Vue 문법을 학습합니다.</p>
     </div>
     <div class="learning-layout">
       <el-card class="flow-card" shadow="never">
-        <div class="flow-card-header"><el-tag type="primary" effect="light">실행 흐름</el-tag><span>전주 카드 선택</span></div>
-        <div v-for="(step, index) in ['카드를 클릭합니다.', 'WeatherCard가 select-card를 발생시킵니다.', 'selectedCityInfo가 새 문구로 갱신됩니다.', 'Vue가 상태 바를 자동으로 다시 그립니다.']" :key="step" class="flow-step-wrap">
-          <div class="flow-step"><strong>{{ index + 1 }}</strong><div><b>{{ ['사용자 입력', '이벤트 전달', '반응형 상태 변경', '화면 업데이트'][index] }}</b><span>{{ step }}</span></div></div>
+        <div class="flow-card-header"><el-tag type="primary" effect="light">실행 흐름</el-tag><span>전주 여행 시작</span></div>
+        <div v-for="(step, index) in ['전주 카드를 클릭합니다.', 'selectedCity가 전주 객체로 바뀝니다.', 'backgroundClass와 날씨 추천이 계산됩니다.', 'Pinia의 구름이 상태가 돌봄 행동에 반응합니다.']" :key="step" class="flow-step-wrap">
+          <div class="flow-step"><strong>{{ index + 1 }}</strong><div><b>{{ ['도시 선택', '반응형 상태 변경', '조건·클래스 계산', '펫 상태 업데이트'][index] }}</b><span>{{ step }}</span></div></div>
           <div v-if="index < 3" class="flow-line"></div>
         </div>
       </el-card>
