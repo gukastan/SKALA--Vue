@@ -1,7 +1,10 @@
 <script setup>
 import { computed } from 'vue'
 import { useConfigStore } from '@/stores/configStore'
-import puppySprite from '../../assets/pixel/pet-puppy.png'
+import happyPuppySprite from '../../assets/pixel/pet-puppy-happy.png'
+import normalPuppySprite from '../../assets/pixel/pet-puppy-normal.png'
+import sleepyPuppySprite from '../../assets/pixel/pet-puppy-sleepy.png'
+import hungryPuppySprite from '../../assets/pixel/pet-puppy-hungry.png'
 
 const props = defineProps({
   city: { type: Object, required: true },
@@ -12,11 +15,17 @@ const displayTemp = computed(() => configStore.unit === 'fahrenheit' ? Math.roun
 
 const petState = computed(() => {
   if (props.pet.energy < 35) return 'sleepy'
-  if (props.pet.comfort < 40) return 'hot'
   if (props.pet.hunger > 70) return 'hungry'
   if (props.pet.mood === '행복') return 'happy'
   return 'normal'
 })
+
+const puppySprite = computed(() => ({
+  happy: happyPuppySprite,
+  normal: normalPuppySprite,
+  sleepy: sleepyPuppySprite,
+  hungry: hungryPuppySprite,
+}[petState.value]))
 </script>
 
 <template>
@@ -25,7 +34,7 @@ const petState = computed(() => {
       <div class="pixel-stage-top"><span>📍 {{ city.name }}에 도착한 {{ pet.name }}</span><el-tag effect="dark" type="warning">{{ city.landmark }}</el-tag></div>
       <div class="pixel-weather">{{ city.weatherIcon }} {{ city.status }} · {{ displayTemp }}{{ configStore.unitSymbol }}</div>
       <div class="pixel-scene">
-        <img :class="['pixel-puppy-sprite', `is-${petState}`]" :src="puppySprite" :alt="`${pet.name} 캐릭터`" />
+        <img :class="['pixel-puppy-sprite', `is-${petState}`]" :src="puppySprite" :alt="`${pet.name} ${petState} 캐릭터`" />
         <div class="pixel-caption">{{ pet.name }}의 여행 일지</div>
       </div>
       <div class="pixel-message">{{ city.petMessage }}</div>
