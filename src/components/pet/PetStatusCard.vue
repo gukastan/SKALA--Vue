@@ -6,7 +6,7 @@ defineProps({
 
 <template>
   <el-card class="pet-status-card" shadow="never">
-    <div class="pet-status-heading"><div><span class="section-kicker">PET STATUS</span><h3>{{ pet.name }}의 상태</h3></div><el-tag type="success">{{ pet.mood }}</el-tag></div>
+    <div class="pet-status-heading"><div><span class="section-kicker">PET STATUS</span><h3>{{ pet.name }}의 상태</h3><small>시간이 지나면 자동으로 변화해요 · 30초 주기</small></div><el-tag type="success">{{ pet.mood }}</el-tag></div>
     <div class="status-row"><span>⚡ 체력</span><el-progress :percentage="pet.energy" :stroke-width="10" color="#67c23a" /></div>
     <div class="status-row"><span>🌿 쾌적도</span><el-progress :percentage="pet.comfort" :stroke-width="10" color="#409eff" /></div>
     <div class="status-row"><span>🍪 배고픔</span><el-progress :percentage="pet.hunger" :stroke-width="10" color="#e6a23c" /></div>

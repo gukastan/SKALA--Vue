@@ -8,6 +8,7 @@ export const usePetStore = defineStore('pet', () => {
   const comfort = ref(70)
   const hunger = ref(30)
   const statusText = ref('도시를 선택하면 구름이가 여행을 시작해요.')
+  let decayTimer
 
   const moodLabel = computed(() => `${name.value} · ${mood.value}`)
 
@@ -17,6 +18,27 @@ export const usePetStore = defineStore('pet', () => {
     comfort.value = 70
     hunger.value = 30
     statusText.value = '새로운 도시에서 여행을 시작했어요.'
+  }
+
+  function decayByTime() {
+    energy.value = Math.max(0, energy.value - 1)
+    comfort.value = Math.max(0, comfort.value - 1)
+    hunger.value = Math.min(100, hunger.value + 1)
+
+    if (energy.value <= 20) mood.value = '졸림'
+    else if (comfort.value <= 20) mood.value = '불편'
+    else if (hunger.value >= 80) mood.value = '배고픔'
+  }
+
+  function startTimeDecay() {
+    if (decayTimer) return
+    decayTimer = window.setInterval(decayByTime, 30000)
+  }
+
+  function stopTimeDecay() {
+    if (!decayTimer) return
+    window.clearInterval(decayTimer)
+    decayTimer = undefined
   }
 
   function care(action, city) {
@@ -43,5 +65,5 @@ export const usePetStore = defineStore('pet', () => {
     }
   }
 
-  return { name, mood, energy, comfort, hunger, statusText, moodLabel, resetStatus, care }
+  return { name, mood, energy, comfort, hunger, statusText, moodLabel, resetStatus, care, startTimeDecay, stopTimeDecay }
 })

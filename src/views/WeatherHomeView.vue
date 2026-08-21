@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import BaseDashboardCard from '../components/exercise/BaseDashboardCard.vue'
@@ -22,7 +22,10 @@ const { name: petName, mood, energy, comfort, hunger, statusText: actionMessage 
 
 onMounted(() => {
   if (route.query.search) searchQuery.value = route.query.search
+  petStore.startTimeDecay()
 })
+
+onUnmounted(() => petStore.stopTimeDecay())
 
 watch(searchQuery, (newQuery) => {
   router.replace({ path: route.path, query: { search: newQuery || undefined } })
