@@ -13,10 +13,16 @@ defineProps({
 
 <template>
   <div class="search-inner">
-    <h3>🔍 도시 검색</h3>
-    <input type="text" :value="currentQuery" @input="$emit('update-query', $event.target.value)" placeholder="검색할 도시 이름 입력" />
-    <p>
-      검색 중인 도시: <strong>{{ currentQuery }}</strong>
-    </p>
+    <div class="search-heading"><div><span class="search-kicker">LOCATION SEARCH</span><h3>도시 검색</h3></div><el-tag type="info" effect="plain">{{ currentQuery ? '검색 중' : '전체 도시' }}</el-tag></div>
+    <el-input :model-value="currentQuery" size="large" clearable placeholder="도시 이름을 입력하세요" @input="$emit('update-query', $event)" />
+    <p class="search-result">검색 중인 도시: <strong>{{ currentQuery || '전체 도시' }}</strong></p>
   </div>
 </template>
+
+<style scoped>
+.search-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.search-kicker { color: #2680eb; font-size: 10px; font-weight: 800; letter-spacing: .12em; }
+h3 { margin: 5px 0 0; font-size: 19px; }
+.search-result { margin: 11px 0 0; color: #829ab1; font-size: 12px; }
+.search-result strong { color: #102a43; }
+</style>

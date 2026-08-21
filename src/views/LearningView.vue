@@ -19,17 +19,17 @@ const concepts = [
       <p class="page-lead">사용자 모드의 화면이 어떤 Vue 문법으로 만들어졌는지 한눈에 확인하는 학습 공간입니다.</p>
     </div>
     <div class="learning-layout">
-      <article class="flow-card">
-        <div class="flow-card-header"><span class="mini-badge">실행 흐름</span><span>서울 카드 선택</span></div>
+      <el-card class="flow-card" shadow="never">
+        <div class="flow-card-header"><el-tag type="primary" effect="light">실행 흐름</el-tag><span>전주 카드 선택</span></div>
         <div v-for="(step, index) in ['카드를 클릭합니다.', 'WeatherCard가 select-card를 발생시킵니다.', 'selectedCityInfo가 새 문구로 갱신됩니다.', 'Vue가 상태 바를 자동으로 다시 그립니다.']" :key="step" class="flow-step-wrap">
           <div class="flow-step"><strong>{{ index + 1 }}</strong><div><b>{{ ['사용자 입력', '이벤트 전달', '반응형 상태 변경', '화면 업데이트'][index] }}</b><span>{{ step }}</span></div></div>
           <div v-if="index < 3" class="flow-line"></div>
         </div>
-      </article>
+      </el-card>
       <article class="concept-grid">
-        <div v-for="concept in concepts" :key="concept.name" class="concept-card"><code>{{ concept.name }}</code><p>{{ concept.description }}</p><small>{{ concept.code }}</small></div>
+        <el-card v-for="concept in concepts" :key="concept.name" class="concept-card" shadow="hover"><code>{{ concept.name }}</code><p>{{ concept.description }}</p><small>{{ concept.code }}</small></el-card>
       </article>
     </div>
-    <RouterLink to="/practice" class="learning-cta">개념별 실습으로 이동하기 <span>→</span></RouterLink>
+    <RouterLink to="/practice" class="learning-cta"><el-button type="primary" size="large">개념별 실습으로 이동하기 <span>→</span></el-button></RouterLink>
   </section>
 </template>

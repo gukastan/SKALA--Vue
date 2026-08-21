@@ -12,45 +12,31 @@ const emit = defineEmits(['select-card', 'click-detail'])
 </script>
 
 <template>
-  <div class="weather-card" @click="emit('select-card', `${cityItem.name}이 선택되었습니다.`)">
-    <h4>{{ cityItem.name }} ({{ cityItem.status }})</h4>
-    <p>현재 기온: {{ cityItem.temp }}°C</p>
+  <el-card class="weather-card" shadow="hover" @click="emit('select-card', `${cityItem.name}이 선택되었습니다.`)">
+    <div class="weather-card-heading"><h4>{{ cityItem.name }}</h4><el-tag :type="cityItem.temp >= 25 ? 'danger' : 'info'" effect="light">{{ cityItem.status }}</el-tag></div>
+    <p class="temperature">{{ cityItem.temp }}<sup>°C</sup></p>
 
-    <span v-if="cityItem.temp >= 25" class="badge hot">🔥 더움</span>
-    <span v-else class="badge cool">❄️ 선선함</span>
+    <el-tag v-if="cityItem.temp >= 25" type="danger" effect="dark">🔥 더움</el-tag>
+    <el-tag v-else type="info" effect="dark">❄️ 선선함</el-tag>
+    <div class="weather-meta"><span>💧 {{ cityItem.humidity }}%</span><span>🌿 미세먼지 {{ cityItem.airQuality }}</span></div>
+    <div class="weather-warning"><el-tag v-if="cityItem.rainProbability >= 60" type="info" effect="plain">☔ 우산 필요</el-tag><el-tag v-if="cityItem.uvIndex === '높음'" type="warning" effect="plain">🧢 자외선 주의</el-tag></div>
 
-    <button class="btn-detail" @click.stop="emit('click-detail', cityItem.name, cityItem.status)">상세보기</button>
-  </div>
+    <el-button class="btn-detail" type="primary" plain @click.stop="emit('click-detail', cityItem.name, cityItem.status)">상세보기</el-button>
+  </el-card>
 </template>
 
 <style scoped>
 .weather-card {
-  background: #fff;
-  border: 1px solid #dee2e6;
-  padding: 12px;
   margin-bottom: 10px;
-  border-radius: 6px;
   cursor: pointer;
   position: relative;
 }
-.badge {
-  display: inline-block;
-  padding: 4px 8px;
-  font-size: 12px;
-  border-radius: 4px;
-  color: #fff;
-}
-.hot {
-  background-color: #ff7675;
-}
-.cool {
-  background-color: #74b9ff;
-}
+.weather-card :deep(.el-card__body) { padding: 17px 18px; }
+.weather-card-heading { display: flex; align-items: center; justify-content: space-between; }.weather-card h4 { margin: 0; font-size: 18px; }.temperature { margin: 12px 0 10px; color: #102a43; font-size: 32px; font-weight: 800; }.temperature sup { margin-left: 3px; font-size: 15px; font-weight: 600; }
+.weather-meta, .weather-warning { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; color: #627d98; font-size: 12px; }.weather-warning { gap: 6px; margin-top: 8px; }
 .btn-detail {
   position: absolute;
-  right: 12px;
-  top: 15px;
-  padding: 6px 10px;
-  cursor: pointer;
+  right: 16px;
+  bottom: 15px;
 }
 </style>

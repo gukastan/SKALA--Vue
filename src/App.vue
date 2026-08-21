@@ -1,16 +1,19 @@
 <script setup>
+import { useRoute } from 'vue-router'
 import UnitToggler from './components/exercise/UnitToggler.vue'
+
+const route = useRoute()
 </script>
 
 <template>
   <header class="site-header">
     <RouterLink to="/" class="brand"><span class="brand-mark">☀</span><span>Weather Learning App</span></RouterLink>
-    <nav class="main-nav" aria-label="주 메뉴">
-      <RouterLink to="/" class="nav-link">사용자 모드</RouterLink>
-      <RouterLink to="/about" class="nav-link">서비스 소개</RouterLink>
-      <RouterLink to="/learning" class="nav-link">학습 모드</RouterLink>
-      <RouterLink to="/practice" class="nav-link">실습 부록</RouterLink>
-    </nav>
+    <el-menu :default-active="route.path" mode="horizontal" router class="main-menu" aria-label="주 메뉴">
+      <el-menu-item index="/">사용자 모드</el-menu-item>
+      <el-menu-item index="/about">서비스 소개</el-menu-item>
+      <el-menu-item index="/learning">학습 모드</el-menu-item>
+      <el-menu-item index="/practice">실습 부록</el-menu-item>
+    </el-menu>
     <UnitToggler />
   </header>
   <main class="app-main"><RouterView /></main>

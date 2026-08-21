@@ -1,68 +1,24 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { weatherCities } from '../data/weatherData'
 
 const route = useRoute()
 const router = useRouter()
-
-const mockDetails = {
-  city_01: { name: '대한민국 서울특별시', temp: 28, status: '맑음', humidity: '55%', wind: '2.5m/s' },
-  city_02: { name: '경기도 수원시 영통구', temp: 24, status: '비', humidity: '85%', wind: '4.1m/s' },
-  city_03: { name: '부산광역시 해운대구', temp: 26, status: '구름', humidity: '65%', wind: '5.0m/s' },
-}
-
-const cityData = ref(null)
-
-onMounted(() => {
-  const id = route.params.cityId
-  if (mockDetails[id]) {
-    cityData.value = mockDetails[id]
-  }
-})
+const cityData = computed(() => weatherCities.find((city) => city.id === route.params.cityId))
 </script>
 
 <template>
-  <div class="detail-container">
-    <h3>📊 지역별 상세 기상 관측 정보</h3>
-    <hr />
-
-    <div v-if="cityData" class="info-card">
-      <h4>📍 지정 지역: {{ cityData.name }}</h4>
-      <p>
-        실시간 기온: <strong>{{ cityData.temp }}°C</strong>
-      </p>
-      <p>기상 현황: {{ cityData.status }}</p>
-      <p>대기 습도: {{ cityData.humidity }}</p>
-      <p>현재 풍속: {{ cityData.wind }}</p>
-    </div>
-    <div v-else>
-      <p>해당 지역의 상세 데이터 장부가 존재하지 않습니다.</p>
-    </div>
-
-    <button @click="router.push('/')" class="back-btn">← 메인 대시보드로 돌아가기</button>
-  </div>
+  <section class="detail-container" v-if="cityData">
+    <div class="detail-heading"><div><span class="eyebrow">CITY WEATHER REPORT</span><h1>{{ cityData.name }} 상세 날씨</h1><p>{{ cityData.landmark }}를 여행 중인 구름이의 관측 리포트입니다.</p></div><el-button @click="router.push('/')">← 대시보드</el-button></div>
+    <div :class="['detail-banner', cityData.backgroundClass]"><span>{{ cityData.weatherIcon }}</span><div><strong>{{ cityData.name }}</strong><small>{{ cityData.status }} · {{ cityData.temp }}°C</small></div><el-tag type="warning" effect="dark">{{ cityData.landmark }}</el-tag></div>
+    <el-row :gutter="16" class="detail-stats"><el-col v-for="stat in [{ label: '습도', value: `${cityData.humidity}%`, icon: '💧' }, { label: '바람', value: `${cityData.windSpeed}m/s`, icon: '🌬️' }, { label: '강수확률', value: `${cityData.rainProbability}%`, icon: '☔' }, { label: '미세먼지', value: cityData.airQuality, icon: '🌿' }]" :key="stat.label" :xs="12" :sm="6"><el-card shadow="hover"><div class="stat-item"><span>{{ stat.icon }}</span><small>{{ stat.label }}</small><strong>{{ stat.value }}</strong></div></el-card></el-col></el-row>
+    <el-alert :title="cityData.petMessage" type="warning" :closable="false" show-icon />
+  </section>
+  <el-empty v-else description="해당 도시의 날씨 정보를 찾을 수 없습니다."><el-button type="primary" @click="router.push('/')">대시보드로 돌아가기</el-button></el-empty>
 </template>
 
 <style scoped>
-.detail-container {
-  margin: 0 auto;
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-}
-.info-card {
-  background: #f1f2f6;
-  padding: 15px;
-  border-radius: 6px;
-  margin: 15px 0;
-}
-.back-btn {
-  padding: 8px 12px;
-  background: #2c3e50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
+.detail-container { padding: 30px; border-radius: 18px; background: #fff; box-shadow: 0 8px 28px rgba(16,42,67,.06); }.detail-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }.detail-heading h1 { font-size: clamp(28px, 4vw, 44px); }.detail-heading p { color: #627d98; }.detail-banner { display: flex; align-items: center; gap: 18px; margin: 28px 0 18px; padding: 24px; color: #fff; border: 4px solid #222; font-family: 'Courier New', monospace; }.jeonju-bg { background: linear-gradient(#8fd3ff 0 52%, #93c95b 52%); }.busan-bg { background: linear-gradient(#a7e8ff 0 45%, #43b9dd 45%); }.gwangju-bg { background: linear-gradient(#65748b 0 48%, #63836c 48%); }.cheonan-bg { background: linear-gradient(#b4e3ff 0 50%, #a1c96c 50%); }.detail-banner > span { font-size: 52px; }.detail-banner strong, .detail-banner small { display: block; }.detail-banner strong { font-size: 27px; }.detail-banner small { margin-top: 6px; }.detail-banner .el-tag { margin-left: auto; }.detail-stats { margin-bottom: 18px; }.stat-item { display: grid; grid-template-columns: 28px 1fr; align-items: center; gap: 5px; }.stat-item span { grid-row: span 2; font-size: 24px; }.stat-item small { color: #829ab1; }.stat-item strong { color: #102a43; font-size: 18px; }
+@media (max-width: 600px) { .detail-container { padding: 20px; }.detail-heading { flex-direction: column; }.detail-banner { flex-wrap: wrap; }.detail-banner .el-tag { margin-left: 0; } }
 </style>
