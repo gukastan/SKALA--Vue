@@ -1,6 +1,9 @@
 <script setup>
+import { computed } from 'vue'
+import { useConfigStore } from '@/stores/configStore'
+
 // 1. 상위로부터 단방향 주입받을 객체 데이터 규격 검수 (매크로)
-defineProps({
+const props = defineProps({
   cityItem: {
     type: Object,
     required: true,
@@ -9,12 +12,14 @@ defineProps({
 
 // 2. 상위로 송신할 두 가지 경로의 커스텀 이벤트 식별자 등록 (매크로)
 const emit = defineEmits(['select-card', 'click-detail'])
+const configStore = useConfigStore()
+const displayTemp = computed(() => configStore.unit === 'fahrenheit' ? Math.round((props.cityItem.temp * 9) / 5 + 32) : props.cityItem.temp)
 </script>
 
 <template>
   <el-card class="weather-card" shadow="hover" @click="emit('select-card', `${cityItem.name}이 선택되었습니다.`)">
     <div class="weather-card-heading"><h4>{{ cityItem.name }}</h4><el-tag :type="cityItem.temp >= 25 ? 'danger' : 'info'" effect="light">{{ cityItem.status }}</el-tag></div>
-    <p class="temperature">{{ cityItem.temp }}<sup>°C</sup></p>
+    <p class="temperature">{{ displayTemp }}<sup>{{ configStore.unitSymbol }}</sup></p>
 
     <el-tag v-if="cityItem.temp >= 25" type="danger" effect="dark">🔥 더움</el-tag>
     <el-tag v-else type="info" effect="dark">❄️ 선선함</el-tag>

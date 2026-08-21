@@ -1,10 +1,13 @@
 <script setup>
 import { computed } from 'vue'
+import { useConfigStore } from '@/stores/configStore'
 
 const props = defineProps({
   city: { type: Object, required: true },
   pet: { type: Object, required: true },
 })
+const configStore = useConfigStore()
+const displayTemp = computed(() => configStore.unit === 'fahrenheit' ? Math.round((props.city.temp * 9) / 5 + 32) : props.city.temp)
 
 const petFace = computed(() => {
   if (props.pet.energy < 35) return '😴'
@@ -19,7 +22,7 @@ const petFace = computed(() => {
   <el-card class="pet-stage-card" shadow="never">
     <div :class="['pixel-stage', city.backgroundClass]">
       <div class="pixel-stage-top"><span>📍 {{ city.name }}에 도착한 {{ pet.name }}</span><el-tag effect="dark" type="warning">{{ city.landmark }}</el-tag></div>
-      <div class="pixel-weather">{{ city.weatherIcon }} {{ city.status }} · {{ city.temp }}°C</div>
+      <div class="pixel-weather">{{ city.weatherIcon }} {{ city.status }} · {{ displayTemp }}{{ configStore.unitSymbol }}</div>
       <div class="pixel-scene">
         <div class="pixel-landmark">▟ {{ city.landmark }} ▙</div>
         <div class="pixel-pet" role="img" :aria-label="`${pet.name} 캐릭터`">{{ petFace }}</div>

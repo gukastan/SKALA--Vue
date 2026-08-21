@@ -2,16 +2,19 @@
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { weatherCities } from '../data/weatherData'
+import { useConfigStore } from '@/stores/configStore'
 
 const route = useRoute()
 const router = useRouter()
 const cityData = computed(() => weatherCities.find((city) => city.id === route.params.cityId))
+const configStore = useConfigStore()
+const displayTemp = computed(() => cityData.value && (configStore.unit === 'fahrenheit' ? Math.round((cityData.value.temp * 9) / 5 + 32) : cityData.value.temp))
 </script>
 
 <template>
   <section class="detail-container" v-if="cityData">
     <div class="detail-heading"><div><span class="eyebrow">CITY WEATHER REPORT</span><h1>{{ cityData.name }} 상세 날씨</h1><p>{{ cityData.landmark }}를 여행 중인 구름이의 관측 리포트입니다.</p></div><el-button @click="router.push('/')">← 대시보드</el-button></div>
-    <div :class="['detail-banner', cityData.backgroundClass]"><span>{{ cityData.weatherIcon }}</span><div><strong>{{ cityData.name }}</strong><small>{{ cityData.status }} · {{ cityData.temp }}°C</small></div><el-tag type="warning" effect="dark">{{ cityData.landmark }}</el-tag></div>
+    <div :class="['detail-banner', cityData.backgroundClass]"><span>{{ cityData.weatherIcon }}</span><div><strong>{{ cityData.name }}</strong><small>{{ cityData.status }} · {{ displayTemp }}{{ configStore.unitSymbol }}</small></div><el-tag type="warning" effect="dark">{{ cityData.landmark }}</el-tag></div>
     <el-row :gutter="16" class="detail-stats"><el-col v-for="stat in [{ label: '습도', value: `${cityData.humidity}%`, icon: '💧' }, { label: '바람', value: `${cityData.windSpeed}m/s`, icon: '🌬️' }, { label: '강수확률', value: `${cityData.rainProbability}%`, icon: '☔' }, { label: '미세먼지', value: cityData.airQuality, icon: '🌿' }]" :key="stat.label" :xs="12" :sm="6"><el-card shadow="hover"><div class="stat-item"><span>{{ stat.icon }}</span><small>{{ stat.label }}</small><strong>{{ stat.value }}</strong></div></el-card></el-col></el-row>
     <el-alert :title="cityData.petMessage" type="warning" :closable="false" show-icon />
   </section>
