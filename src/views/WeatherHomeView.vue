@@ -84,7 +84,7 @@ const handleDetailJump = (id) => router.push(`/weather/${id}`)
       <div><span class="eyebrow">PIXEL WEATHER PET</span><h1>날씨를 따라 여행하는<br /><span>{{ petName }}의 하루</span></h1><p>도시를 선택하면 {{ petName }}가 그곳의 날씨와 랜드마크를 만나러 떠나요.</p></div><div class="hero-pet">☁️</div>
     </section>
 
-    <BaseDashboardCard><SearchBar :current-query="searchQuery" @update-query="(val) => (searchQuery = val)" /></BaseDashboardCard>
+    <BaseDashboardCard class="search-panel"><SearchBar :current-query="searchQuery" @update-query="(val) => (searchQuery = val)" /></BaseDashboardCard>
 
     <div class="weather-pet-layout">
       <div class="weather-list-column">
@@ -108,7 +108,7 @@ const handleDetailJump = (id) => router.push(`/weather/${id}`)
 </template>
 
 <style scoped>
-.pixel-hero { border: 4px solid #222; border-radius: 0; background: linear-gradient(115deg, #4338ca, #7c3aed); }.pixel-hero h1 { letter-spacing: 0; }.pixel-hero h1 span { color: #fde68a; }.hero-pet { display: grid; place-items: center; width: 130px; height: 130px; border: 4px solid #222; background: #bae6fd; font-size: 68px; image-rendering: pixelated; }.weather-pet-layout { display: grid; grid-template-columns: minmax(260px, .8fr) 1.25fr; gap: 20px; align-items: start; }.pet-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }.recommendation-alert, .action-alert { margin-top: 14px; border-radius: 10px; }.status-bar { margin-top: 14px; border-radius: 12px; }.pet-column { min-width: 0; }.weather-list-column { min-width: 0; }.source-tags { display: flex; gap: 6px; }
+.pixel-hero { display: flex; justify-content: space-between; align-items: center; padding: 28px 34px; border: 4px solid #8c6a58; border-radius: 18px; background: linear-gradient(135deg, #fff0c9, #ffd4dd); box-shadow: inset 0 -5px #f2b6c4, 0 5px 0 #8c6a58; }.pixel-hero h1 { letter-spacing: -.03em; color: #3d2b52; }.pixel-hero h1 span { color: #e35d83; }.pixel-hero p { color: #806a91; }.hero-pet { display: grid; place-items: center; width: 118px; height: 118px; border: 4px solid #8c6a58; border-radius: 50%; background: #d7f0d2; font-size: 58px; image-rendering: pixelated; box-shadow: inset 0 -5px #a2ca9e; }.weather-pet-layout { display: grid; grid-template-columns: minmax(300px, .82fr) 1.35fr; gap: 24px; align-items: start; }.pet-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }.recommendation-alert, .action-alert { margin-top: 14px; border-radius: 14px; }.status-bar { margin-top: 14px; border-radius: 14px; }.pet-column { min-width: 0; }.weather-list-column { min-width: 0; }.source-tags { display: flex; gap: 6px; }
 @media (max-width: 850px) { .weather-pet-layout { grid-template-columns: 1fr; }.pet-grid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 600px) { .pixel-hero { padding: 25px; }.hero-pet { width: 82px; height: 82px; font-size: 40px; }.pet-grid { grid-template-columns: 1fr; } }
 </style>
