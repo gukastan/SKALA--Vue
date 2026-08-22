@@ -1,14 +1,29 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { weatherCities } from '../data/weatherData'
 import { useConfigStore } from '@/stores/configStore'
+import { fetchWeatherForCity, hasWeatherApiKey } from '../services/weatherService'
 
 const route = useRoute()
 const router = useRouter()
-const cityData = computed(() => weatherCities.find((city) => city.id === route.params.cityId))
+const baseCity = computed(() => weatherCities.find((city) => city.id === route.params.cityId))
+const liveCity = ref(null)
+const cityData = computed(() => liveCity.value || baseCity.value)
 const configStore = useConfigStore()
 const displayTemp = computed(() => cityData.value && (configStore.unit === 'fahrenheit' ? Math.round((cityData.value.temp * 9) / 5 + 32) : cityData.value.temp))
+
+const loadCityWeather = async () => {
+  liveCity.value = null
+  if (!hasWeatherApiKey || !baseCity.value) return
+  try {
+    liveCity.value = await fetchWeatherForCity(baseCity.value)
+  } catch {
+    liveCity.value = null
+  }
+}
+
+watch(() => route.params.cityId, loadCityWeather, { immediate: true })
 </script>
 
 <template>

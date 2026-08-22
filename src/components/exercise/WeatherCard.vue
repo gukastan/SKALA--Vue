@@ -18,15 +18,16 @@ const displayTemp = computed(() => configStore.unit === 'fahrenheit' ? Math.roun
 
 <template>
   <el-card class="weather-card" shadow="hover" @click="emit('select-card', `${cityItem.name}이 선택되었습니다.`)">
-    <div class="weather-card-heading"><h4>{{ cityItem.name }}</h4><el-tag :type="cityItem.temp >= 25 ? 'danger' : 'info'" effect="light">{{ cityItem.status }}</el-tag></div>
-    <p class="temperature">{{ displayTemp }}<sup>{{ configStore.unitSymbol }}</sup></p>
+    <div class="weather-card-heading">
+      <div class="weather-card-city"><h4>{{ cityItem.name }}</h4><el-tag :type="cityItem.temp >= 25 ? 'danger' : 'info'" effect="light">{{ cityItem.status }}</el-tag></div>
+      <p class="temperature">{{ displayTemp }}<sup>{{ configStore.unitSymbol }}</sup></p>
+    </div>
 
-    <el-tag v-if="cityItem.temp >= 25" type="danger" effect="dark">🔥 더움</el-tag>
-    <el-tag v-else type="info" effect="dark">❄️ 선선함</el-tag>
-    <div class="weather-meta"><span>💧 {{ cityItem.humidity }}%</span><span>🌿 미세먼지 {{ cityItem.airQuality }}</span></div>
-    <div class="weather-warning"><el-tag v-if="cityItem.rainProbability >= 60" type="info" effect="plain">☔ 우산 필요</el-tag><el-tag v-if="cityItem.uvIndex === '높음'" type="warning" effect="plain">🧢 자외선 주의</el-tag></div>
-
-    <el-button class="btn-detail" type="primary" plain @click.stop="emit('click-detail', cityItem.id)">상세보기</el-button>
+    <div class="weather-card-bottom">
+      <el-tag v-if="cityItem.temp >= 25" type="danger" effect="dark">🔥 더움</el-tag>
+      <el-tag v-else type="info" effect="dark">❄️ 선선함</el-tag>
+      <el-button class="btn-detail" type="primary" plain @click.stop="emit('click-detail', cityItem.id)">상세보기</el-button>
+    </div>
   </el-card>
 </template>
 
@@ -37,11 +38,6 @@ const displayTemp = computed(() => configStore.unit === 'fahrenheit' ? Math.roun
   position: relative;
 }
 .weather-card :deep(.el-card__body) { padding: 17px 18px; }
-.weather-card-heading { display: flex; align-items: center; justify-content: space-between; }.weather-card h4 { margin: 0; font-size: 18px; }.temperature { margin: 12px 0 10px; color: #102a43; font-size: 32px; font-weight: 800; }.temperature sup { margin-left: 3px; font-size: 15px; font-weight: 600; }
-.weather-meta, .weather-warning { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; color: #627d98; font-size: 12px; }.weather-warning { gap: 6px; margin-top: 8px; }
-.btn-detail {
-  position: absolute;
-  right: 16px;
-  bottom: 15px;
-}
+.weather-card-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }.weather-card-city { display: flex; align-items: center; gap: 7px; min-width: 0; }.weather-card h4 { margin: 0; font-size: 18px; }.temperature { flex: 0 0 auto; margin: -2px 0 0 auto; color: #102a43; font-size: 30px; font-weight: 800; line-height: 1; text-align: right; }.temperature sup { margin-left: 3px; font-size: 15px; font-weight: 600; }
+.weather-card-bottom { display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin-top: 22px; }.weather-card-bottom .btn-detail { margin-left: auto; }.btn-detail { flex: 0 0 auto; }
 </style>

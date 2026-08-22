@@ -3,6 +3,7 @@ import axios from 'axios'
 const API_URL = 'https://api.openweathermap.org/data/2.5/weather'
 
 export const hasWeatherApiKey = Boolean(import.meta.env.VITE_OPENWEATHER_API_KEY)
+const TRACKED_CITY_IDS = new Set(['city_jeonju', 'city_busan', 'city_gwangju', 'city_cheonan'])
 
 const apiClient = axios.create({
   baseURL: API_URL,
@@ -32,7 +33,8 @@ export async function fetchWeatherForCity(city) {
 }
 
 export async function fetchWeatherForCities(cities) {
-  return Promise.all(cities.map((city) => fetchWeatherForCity(city)))
+  const trackedCities = cities.filter((city) => TRACKED_CITY_IDS.has(city.id))
+  return Promise.all(trackedCities.map((city) => fetchWeatherForCity(city)))
 }
 
 function weatherIconFor(condition) {
