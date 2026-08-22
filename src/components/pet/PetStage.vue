@@ -67,6 +67,37 @@ const puppySprite = computed(() => ({
 </template>
 
 <style scoped>
+.pet-stage-card :deep(.el-card__body) { padding: 0; }
+.pet-device { padding: 18px 18px 14px; border: 5px solid #8c6a58; border-radius: 30px; background: linear-gradient(145deg, #fff0c9, #f4c9d5); box-shadow: inset 0 -8px #e5a8b9, 0 6px 0 #8c6a58; }
+.device-screen-label { margin: 0 12px 12px; color: #d65f83; font: 800 12px 'Courier New', monospace; letter-spacing: .12em; text-align: center; }
+.device-screen { padding: 9px; border: 5px solid #8c6a58; border-radius: 22px; background: #f6dce1; box-shadow: inset 0 0 0 4px #fff1d1; }
+.pixel-stage { min-height: 470px; padding: 18px; color: #fff; font-family: 'Courier New', monospace; image-rendering: pixelated; border: 4px solid #222; border-radius: 12px; background-position: center; background-size: cover; }
+.jeonju-bg { background-image: linear-gradient(rgba(0,0,0,.08), rgba(0,0,0,.08)), url('../../assets/pixel/jeonju-bg.png'); }
+.busan-bg { background-image: linear-gradient(rgba(0,0,0,.08), rgba(0,0,0,.08)), url('../../assets/pixel/busan-bg.png'); }
+.gwangju-bg { background-image: linear-gradient(rgba(0,0,0,.12), rgba(0,0,0,.12)), url('../../assets/pixel/gwangju-bg.png'); }
+.cheonan-bg { background-image: linear-gradient(rgba(0,0,0,.08), rgba(0,0,0,.08)), url('../../assets/pixel/cheonan-bg.png'); }
+.pixel-stage-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; font-size: 12px; font-weight: 700; }
+.pixel-location, .pixel-status { padding: 7px 10px; background: rgba(24,24,27,.72); border: 3px solid #222; text-shadow: 2px 2px #222; }
+.pixel-location { white-space: nowrap; }
+.pixel-status { display: grid; gap: 3px; width: 240px; min-height: 178px; }
+.pixel-status > span { color: #f7d678; font-size: 10px; letter-spacing: .1em; }
+.pixel-status strong { color: #fff; font-size: 13px; }
+.mini-status { display: grid; gap: 2px; }
+.mini-status label { display: flex; justify-content: space-between; gap: 10px; color: #fff; font-size: 9px; line-height: 1.2; }
+.mini-status b { color: #f7d678; font-weight: 800; }
+.mini-status i { display: block; height: 5px; overflow: hidden; border: 1px solid #222; background: #e8d8d0; }
+.mini-status em { display: block; height: 100%; background: #7bd45f; transition: width .25s ease; }
+.mini-status:nth-of-type(2) em { background: #55bff2; }
+.mini-status:nth-of-type(3) em { background: #f3bf39; }
+.pixel-scene { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 300px; text-align: center; }
+.pixel-message { padding: 12px 14px; color: #222; background: #fff5c2; border: 3px solid #222; font-size: 13px; font-weight: 700; line-height: 1.45; }
+.device-care { display: grid; grid-template-columns: auto repeat(4, 1fr); gap: 8px; align-items: center; margin-top: 13px; }
+.device-care-label { color: #d65f83; font: 800 10px 'Courier New', monospace; letter-spacing: .08em; }
+.device-care button { min-height: 34px; padding: 5px 7px; border: 3px solid #8c6a58; border-radius: 9px; color: #4a354e; background: #fff5d9; box-shadow: 0 3px 0 #b77991; font: 800 11px 'Noto Sans KR', sans-serif; cursor: pointer; }
+.device-care button:active { transform: translateY(2px); box-shadow: 0 1px 0 #b77991; }
+.device-controls { display: flex; justify-content: space-around; margin-top: 13px; color: #725668; font: 800 11px 'Courier New', monospace; }
+.pixel-status { box-sizing: border-box; }
+@media (max-width: 600px) { .pixel-stage-top { flex-direction: column; }.pixel-status { width: 100%; min-height: 0; }.pixel-location { width: 100%; white-space: normal; }.device-care { grid-template-columns: repeat(2, 1fr); }.device-care-label { grid-column: 1 / -1; } }
 </style>
 
 <style scoped>
