@@ -26,7 +26,7 @@ const displayTemp = computed(() => configStore.unit === 'fahrenheit' ? Math.roun
     <div class="weather-meta"><span>💧 {{ cityItem.humidity }}%</span><span>🌿 미세먼지 {{ cityItem.airQuality }}</span></div>
     <div class="weather-warning"><el-tag v-if="cityItem.rainProbability >= 60" type="info" effect="plain">☔ 우산 필요</el-tag><el-tag v-if="cityItem.uvIndex === '높음'" type="warning" effect="plain">🧢 자외선 주의</el-tag></div>
 
-    <el-button class="btn-detail" type="primary" plain @click.stop="emit('click-detail', cityItem.name, cityItem.status)">상세보기</el-button>
+    <el-button class="btn-detail" type="primary" plain @click.stop="emit('click-detail', cityItem.id)">상세보기</el-button>
   </el-card>
 </template>
 

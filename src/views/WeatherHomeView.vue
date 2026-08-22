@@ -76,7 +76,7 @@ const handleDetailJump = (id) => router.push(`/weather/${id}`)
 
         <BaseDashboardCard v-loading="isWeatherLoading">
           <div class="section-heading"><div><span class="section-kicker">TRAVEL MAP</span><h2>여행할 도시</h2></div><div class="source-tags"><el-tag :type="weatherSource === 'live' ? 'success' : 'info'" effect="light">{{ weatherSource === 'live' ? '실시간 API' : 'Mock Data' }}</el-tag><el-tag effect="plain">{{ filteredWeatherList.length }}개 도시</el-tag></div></div>
-          <WeatherCard v-for="item in filteredWeatherList" :key="item.id" :city-item="item" @click="selectCity(item)" @select-card="selectCity(item)" @click-detail="handleDetailJump(item.id)" />
+          <WeatherCard v-for="item in filteredWeatherList" :key="item.id" :city-item="item" @click="selectCity(item)" @select-card="selectCity(item)" @click-detail="handleDetailJump" />
           <el-empty v-if="filteredWeatherList.length === 0" description="검색 결과와 일치하는 도시가 없습니다." :image-size="90" />
           <el-alert v-if="weatherError" :title="weatherError" type="warning" :closable="false" show-icon />
         </BaseDashboardCard>
