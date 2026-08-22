@@ -12,12 +12,12 @@ export const usePetStore = defineStore('pet', () => {
 
   const moodLabel = computed(() => `${name.value} · ${mood.value}`)
 
-  function resetStatus() {
+  function resetStatus(message = '새로운 도시에서 여행을 시작했어요.') {
     mood.value = '보통'
     energy.value = 80
     comfort.value = 70
     hunger.value = 30
-    statusText.value = '새로운 도시에서 여행을 시작했어요.'
+    statusText.value = message
   }
 
   function decayByTime() {

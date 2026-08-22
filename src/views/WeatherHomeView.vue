@@ -16,7 +16,7 @@ const weatherList = ref(weatherCities)
 const searchQuery = ref('')
 const selectedCity = ref(weatherList.value[0])
 const petStore = usePetStore()
-const { name: petName, mood, energy, comfort, hunger } = storeToRefs(petStore)
+const { name: petName, mood, energy, comfort, hunger, statusText } = storeToRefs(petStore)
 const isWeatherLoading = ref(false)
 const weatherSource = ref(hasWeatherApiKey ? 'live' : 'mock')
 const weatherError = ref('')
@@ -56,7 +56,7 @@ const filteredWeatherList = computed(() => {
 
 const selectCity = (city) => {
   selectedCity.value = city
-  petStore.resetStatus()
+  petStore.resetStatus(city.petMessage)
 }
 
 const handleCare = (action) => petStore.care(action, selectedCity.value)
@@ -83,7 +83,7 @@ const handleDetailJump = (id) => router.push(`/weather/${id}`)
       </aside>
 
       <section class="pet-console-column">
-        <PetStage :city="selectedCity" :pet="{ name: petName, mood, energy, comfort, hunger }" @care="handleCare" />
+        <PetStage :city="selectedCity" :pet="{ name: petName, mood, energy, comfort, hunger, statusText }" @care="handleCare" />
       </section>
     </div>
   </div>
