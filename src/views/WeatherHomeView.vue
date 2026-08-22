@@ -5,9 +5,7 @@ import { storeToRefs } from 'pinia'
 import BaseDashboardCard from '../components/exercise/BaseDashboardCard.vue'
 import SearchBar from '../components/exercise/SearchBar.vue'
 import WeatherCard from '../components/exercise/WeatherCard.vue'
-import CareActions from '../components/pet/CareActions.vue'
 import PetStage from '../components/pet/PetStage.vue'
-import PetStatusCard from '../components/pet/PetStatusCard.vue'
 import { weatherCities } from '../data/weatherData'
 import { usePetStore } from '../stores/petStore'
 import { fetchWeatherForCities, hasWeatherApiKey } from '../services/weatherService'
@@ -17,9 +15,8 @@ const route = useRoute()
 const weatherList = ref(weatherCities)
 const searchQuery = ref('')
 const selectedCity = ref(weatherList.value[0])
-const selectedCityInfo = ref('도시를 선택하면 구름이가 여행을 시작해요.')
 const petStore = usePetStore()
-const { name: petName, mood, energy, comfort, hunger, statusText: actionMessage } = storeToRefs(petStore)
+const { name: petName, mood, energy, comfort, hunger } = storeToRefs(petStore)
 const isWeatherLoading = ref(false)
 const weatherSource = ref(hasWeatherApiKey ? 'live' : 'mock')
 const weatherError = ref('')
@@ -57,20 +54,9 @@ const filteredWeatherList = computed(() => {
   return weatherList.value.filter((item) => item.name.includes(query))
 })
 
-const recommendation = computed(() => {
-  const city = selectedCity.value
-  if (city.rainProbability >= 60) return '☔ 비가 올 확률이 높아요. 오늘은 실내에서 쉬는 걸 추천해요.'
-  if (city.uvIndex === '높음') return '🧢 자외선이 강해요. 산책 전 모자를 씌워주세요.'
-  if (city.airQuality === '나쁨') return '😷 공기가 좋지 않아요. 외출을 줄여주세요.'
-  if (city.humidity >= 80) return '💦 습도가 높아요. 시원한 곳에서 쉬게 해주세요.'
-  return `🌿 ${city.name}의 날씨가 좋아요. 구름이와 산책해보세요.`
-})
-
 const selectCity = (city) => {
   selectedCity.value = city
-  selectedCityInfo.value = `${city.name}이 선택되었습니다. 구름이가 ${city.landmark}(으)로 이동했어요.`
   petStore.resetStatus()
-  actionMessage.value = city.petMessage
 }
 
 const handleCare = (action) => petStore.care(action, selectedCity.value)
@@ -94,14 +80,10 @@ const handleDetailJump = (id) => router.push(`/weather/${id}`)
           <el-empty v-if="filteredWeatherList.length === 0" description="검색 결과와 일치하는 도시가 없습니다." :image-size="90" />
           <el-alert v-if="weatherError" :title="weatherError" type="warning" :closable="false" show-icon />
         </BaseDashboardCard>
-        <el-alert class="status-bar" :title="selectedCityInfo" type="success" :closable="false" show-icon />
       </aside>
 
       <section class="pet-console-column">
-        <PetStage :city="selectedCity" :pet="{ name: petName, mood, energy, comfort, hunger }" />
-        <div class="pet-grid"><PetStatusCard :pet="{ name: petName, mood, energy, comfort, hunger }" /><CareActions @care="handleCare" /></div>
-        <el-alert class="recommendation-alert" :title="recommendation" type="warning" :closable="false" show-icon />
-        <el-alert class="action-alert" :title="actionMessage" type="info" :closable="false" show-icon />
+        <PetStage :city="selectedCity" :pet="{ name: petName, mood, energy, comfort, hunger }" @care="handleCare" />
       </section>
     </div>
   </div>
