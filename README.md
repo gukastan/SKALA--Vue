@@ -1,3 +1,5 @@
+![Weather Pet 메인 화면](docs/images/weather-pet-preview.png)
+
 # Weather Pet
 
 도시별 날씨와 다마고치형 펫 시뮬레이션을 결합한 Vue 학습 프로젝트입니다.
